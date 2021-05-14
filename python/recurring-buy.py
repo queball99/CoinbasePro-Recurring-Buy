@@ -24,7 +24,7 @@ if os.path.exists("/config/config.json"):
         run_day = the_schedule['Day']
         run_time = the_schedule['Time']
         repeat_time = the_schedule['Repeat-Time']
-        run_every = the_schedule['Environment']
+        run_every = the_schedule['Scheduled-Run']
 
     for funding in funding_settings:
         enable_funding = funding['Enable-Funding']
