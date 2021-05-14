@@ -41,7 +41,7 @@ if os.path.exists("/config/config.json"):
                 currency_balance = round(account['balance'])
                 return currency_balance
 
-    def get_funding_account(fund_amount):
+    def get_funding_account(fund_amount, currency):
         if fund_source == "default":
             payment_methods = auth_client.get_payment_methods()
             for payment in payment_methods:
@@ -50,13 +50,13 @@ if os.path.exists("/config/config.json"):
         elif fund_source == "coinbase":
             payment_methods = auth_client.get_coinbase_accounts()
             for payment in payment_methods:
-                if ((payment['currency'] == "USD") and (payment['balance'] >= fund_amount)):
+                if ((payment['currency'] == currency) and (round(payment['balance']) >= fund_amount)):
                     payment_id = payment['id']
+                    break
                 else:
                     payment_id = "Error"
         else:
             payment_id = "Error"
-        
         return payment_id
 
     def add_funds(buy_total, current_funds):
@@ -66,7 +66,7 @@ if os.path.exists("/config/config.json"):
         else:
             fund_amount = buy_total - current_funds
             print("Your balance is %s %s, a deposit of %s %s will be made using your selected payment account." % (current_funds, currency, fund_amount, currency))
-            payment_id = get_funding_account(fund_amount)
+            payment_id = get_funding_account(fund_amount, currency)
             if payment_id == "Error":
                 error_msg = "Unable to determine payment method."
                 return ("Error", error_msg)
