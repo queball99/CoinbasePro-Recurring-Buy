@@ -24,7 +24,7 @@ if os.path.exists("/config/config.json"):
         run_day = the_schedule['Day']
         run_time = the_schedule['Time']
         repeat_time = the_schedule['Repeat-Time']
-        run_env = the_schedule['Environment']
+        run_every = the_schedule['Environment']
 
     for funding in funding_settings:
         enable_funding = funding['Enable-Funding']
@@ -118,14 +118,17 @@ if os.path.exists("/config/config.json"):
                 print("Insufficient funds to make purchases.")
                 print("Please deposit at least %s %s into your account" % (buy_total, currency))       
     
-    if run_env == "sandbox":
-        # Sandbox Run
+    if run_every == "seconds":
+        # Run every X seconds (mainly for testing purposes)
         schedule.every(repeat_time).seconds.do(recurring_buy)
-    elif run_env == "production":
-        # Production Run
+    elif run_every == "days":
+        # Run every X days at specified run time
+        schedule.every(repeat_time).days.at(run_time).do(recurring_buy)
+    elif run_every == "weekday":
+        # Run every specified weekday at run time
         getattr(schedule.every(), run_day).at(run_time).do(recurring_buy)
     else:
-        print("Unable to determine Environment. Please check config...")
+        print("Unable to determine run type. Please check config...")
     
     while True:
         schedule.run_pending()
