@@ -24,3 +24,7 @@ class settings:
     def crypto(self):
         crypto_info = self.data['Crypto']
         return crypto_info
+
+    def alerts(self):
+        alerts_info = self.data['Alerts']
+        return alerts_info

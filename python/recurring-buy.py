@@ -4,15 +4,18 @@ import os, sys
 import json
 import coinbasepro, schedule, time
 import settings
+import alerts as send_alert
 
 if os.path.exists("/config/config.json"):
 
     settings = settings.settings()
+    send_alert = send_alert.alert_module()
 
     api_settings = settings.api()
     schedule_settings = settings.schedule()
     funding_settings = settings.funding()
     crypto_settings = settings.crypto()
+    alert_info = settings.alerts()
 
     for api in api_settings:
         key = api['Key']
@@ -31,6 +34,10 @@ if os.path.exists("/config/config.json"):
         currency = funding['Currency']
         max_fund = funding['Max-Fund']
         fund_source = funding['Fund-Source']
+
+    for alerts in alert_info:
+        webhook_url = alerts['Discord-Webhook']
+        alerts_enabled = alerts['Alerts-Enabled']
 
     auth_client = coinbasepro.AuthenticatedClient(key, b64secret, passphrase, api_url=apiurl)
 
@@ -65,7 +72,9 @@ if os.path.exists("/config/config.json"):
             return ("Error", error_msg)
         else:
             fund_amount = buy_total - current_funds
-            print("Your balance is %s %s, a deposit of %s %s will be made using your selected payment account." % (current_funds, currency, fund_amount, currency))
+            fund_msg = "Your balance is %s %s, a deposit of %s %s will be made using your selected payment account." % (current_funds, currency, fund_amount, currency)
+            print(fund_msg)
+            send_alert.discord(fund_msg)
             payment_id = get_funding_account(fund_amount, currency)
             if payment_id == "Error":
                 error_msg = "Unable to determine payment method."
@@ -96,7 +105,9 @@ if os.path.exists("/config/config.json"):
             order_details = auth_client.get_order(order_id=order_id)
             crypto_bought = order_details['filled_size']
             buy_completed = order_details['done_at']
-            print("You bought %s of %s" % (crypto_bought, buy_pair))
+            buy_message = "You bought %s of %s" % (crypto_bought, buy_pair)
+            print(buy_message)
+            send_alert.discord(buy_message)
 
     def recurring_buy():
         buy_total = 0
@@ -112,13 +123,20 @@ if os.path.exists("/config/config.json"):
                 result = add_funds(buy_total, current_funds)
                 if result[0] == "Error":
                     print(result[1])
+                    send_alert.discord(result[1])
                 elif result[0] == "Success":
                     init_buy()
                 else:
-                    print("Something went wrong.")
+                    fund_msg = "Something went wrong attempting to add funds to your account."
+                    print(fund_msg)
+                    send_alert.discord(fund_msg)
             elif enable_funding != True:
-                print("Insufficient funds to make purchases.")
-                print("Please deposit at least %s %s into your account" % (buy_total, currency))       
+                funding_msg = "Unable to complete your Coinbase Pro purchase.\n\
+Insufficient funds to make purchase and Auto-Funding is not enabled.\n\
+Please deposit at least %s %s into your account" % (buy_total, currency)
+                print(funding_msg)
+                send_alert.discord(funding_msg)
+                # print("Please deposit at least %s %s into your account" % (buy_total, currency))       
     
     if run_every == "seconds":
         # Run every X seconds (mainly for testing purposes)
