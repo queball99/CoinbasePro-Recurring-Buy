@@ -1,0 +1,42 @@
+{
+    "API" : [
+        {
+            "Key" : "API_KEY",
+            "Secret" : "API_SECRET",
+            "Passphrase" : "PASSPHRASE",
+            "API-URL" : "https://api.pro.coinbase.com"
+        }
+    ],
+    "Schedule" : [
+        {
+            "Day" : "thursday",
+            "Time" : "23:13",
+            "Repeat-Time" : 10,
+            "Scheduled-Run" : "seconds"
+        }
+    ],
+    "Funding" : [
+        {
+            "Enable-Funding" : true,
+            "Currency" : "USD",
+            "Max-Fund" : 50,
+            "Fund-Source" : "default"
+        }
+    ],
+    "Crypto" : [
+        {
+            "Buy-Pair" : "BTC-USD",
+            "Buy-Amount" : 20
+        },
+        {
+            "Buy-Pair" : "ETH-USD",
+            "Buy-Amount" : 30
+        }
+    ],
+    "Alerts" : [
+        {
+            "Alerts-Enabled" : true,
+            "Discord-Webhook" : "DISCORD_WEBHOOK_URL"
+        }
+    ]
+}
