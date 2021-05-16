@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# CoinbasePro-Recurring-Buy
-=======
 # Coinbase Pro Recurring Buy Bot
 
 Have you ever wanted to automate recurring purchases via Coinbase Pro instead of Coinbase? I did too, so I built a bot to do it! The Bot can be setup to make recurring purchases weekly or every X number of days/seconds. Funds can be automatically added from your default funding account in Coinbase Pro or from Coinbase. Notifications about buys and funding can be sent to Discord.
@@ -128,4 +125,3 @@ git clone https://github.com/queball99/CoinbasePro-Recurring-Buy.git
 cd CoinbasePro-Recurring-Buy
 docker build .
 ```
->>>>>>> development
