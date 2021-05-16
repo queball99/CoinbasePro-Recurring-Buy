@@ -11,7 +11,7 @@ Schedule by [Dan Bader](https://github.com/dbader/schedule)
 
 The `config.json` file is where all settings come from. The Bot checks for the config file at `/config/config.json` when it runs.
 
-To get started copy the `config.example.json` file to a folder that will be mapped to a Docker volume. Rename the file to `config.json`
+To get started copy the `config.example.json` file to a folder that will be mapped to a Docker volume. Rename the file to `config.json` and edit the settings based on your needs. See Configuration Options below.
 
 [Creating a Coinbase Pro API Key](https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro)
 [Creating a Discord Webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
