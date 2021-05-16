@@ -12,7 +12,7 @@
             "Day" : "thursday",
             "Time" : "23:13",
             "Repeat-Time" : 10,
-            "Scheduled-Run" : "seconds"
+            "Scheduled-Run" : "weekday"
         }
     ],
     "Funding" : [
