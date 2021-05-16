@@ -2,13 +2,20 @@
 
 Have you ever wanted to automate recurring purchases via Coinbase Pro instead of Coinbase? I did too, so I built a bot to do it! The Bot can be setup to make recurring purchases weekly or every X number of days/seconds. Funds can be automatically added from your default funding account in Coinbase Pro or from Coinbase. Notifications about buys and funding can be sent to Discord.
 
-Uses the Coinbase Pro Python module by [Alex Contryman](https://github.com/acontry/coinbasepro)
+Build in Python and includes the following modules:
+CoinbasePro by [Alex Contryman](https://github.com/acontry/coinbasepro)
+Discord by [Rapptz](https://github.com/Rapptz/discord.py)
+Schedule by [Dan Bader](https://github.com/dbader/schedule)
 
 ## Coinbase Pro Recurring Buy Config
 
 The `config.json` file is where all settings come from. The Bot checks for the config file at `/config/config.json` when it runs.
 
 To get started copy the `config.example.json` file to a folder that will be mapped to a Docker volume. Rename the file to `config.json`
+
+[Creating a Coinbase Pro API Key](https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro)
+[Creating a Discord Webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+
 
 ### Configuration File Options
 
@@ -21,7 +28,7 @@ To get started copy the `config.example.json` file to a folder that will be mapp
 
 | Schedule | Type | Description | Required |
 | :----: | --- | --- | --- |
-| Day | String | Day of the week to make the recurring buy.<br />Available Options: `sunday`, `monday`, `tuesday`, `wednesday`, `thrusday`, `friday`, `saturday` | If Scheduled-Run is set to 'weekday' |
+| Day | String | Day of the week to make the recurring buy.<br />Available Options: `sunday`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday` | If Scheduled-Run is set to 'weekday' |
 | Time | String | The time to make the recurring buy. Specified in 24hr time as `HH:MM`. | If Scheduled-Run is set to `weekday` or `days`. |
 | Repeat-Time | Integer | Delay between runs. Will be X days or X seconds depending on if Scheduled-Run is set to `days` or `seconds`. | If Scheduled-Run is set to `days` or `seconds` |
 | Scheduled-Run | String | The type of recurring run.<br />Available Options: `seconds`, `days`, `weekday` | Yes |
@@ -45,8 +52,7 @@ To get started copy the `config.example.json` file to a folder that will be mapp
 
 ## Discord Alerts
 
-You can have alerts about funding and buys sent to Discord via a Webhook. See this [Discord support article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
-) for how to setup a Webhook.
+You can have alerts about funding and buys sent to Discord via a Webhook. See this [Discord support article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to setup a Webhook.
 
 ## Docker Container
 
