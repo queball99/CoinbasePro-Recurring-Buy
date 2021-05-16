@@ -32,7 +32,7 @@ The Coinbase Pro API Key will need a minimum of 'View' and 'Trade' permissions. 
 | Day | String | Day of the week to make the recurring buy.<br />Available Options: `sunday`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday` | If Scheduled-Run is set to 'weekday' |
 | Time | String | The time to make the recurring buy. Specified in 24hr time as `HH:MM`. | If Scheduled-Run is set to `weekday` or `days`. |
 | Repeat-Time | Integer | Delay between runs. Will be X days or X seconds depending on if Scheduled-Run is set to `days` or `seconds`. | If Scheduled-Run is set to `days` or `seconds` |
-| Scheduled-Run | String | The type of recurring run.<br />Available Options: `seconds`, `days`, `weekday` | Yes |
+| Scheduled-Run | String | How often should the recurring buy be run.<br />Available Options: `seconds`, `days`, `weekday` | Yes |
 
 | Funding | Type | Description | Required |
 | :----: | --- | --- | --- |
