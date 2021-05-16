@@ -2,10 +2,10 @@
 
 Have you ever wanted to automate recurring purchases via Coinbase Pro instead of Coinbase? I did too, so I built a bot to do it! The Bot can be setup to make recurring purchases weekly or every X number of days/seconds. Funds can be automatically added from your default funding account in Coinbase Pro or from Coinbase. Notifications about buys and funding can be sent to Discord.
 
-Build in Python and includes the following modules:
-CoinbasePro by [Alex Contryman](https://github.com/acontry/coinbasepro)
-Discord by [Rapptz](https://github.com/Rapptz/discord.py)
-Schedule by [Dan Bader](https://github.com/dbader/schedule)
+Build in Python and includes the following modules:<br />
+CoinbasePro by [Alex Contryman](https://github.com/acontry/coinbasepro)<br />
+Discord by [Rapptz](https://github.com/Rapptz/discord.py)<br />
+Schedule by [Dan Bader](https://github.com/dbader/schedule)<br />
 
 ## Coinbase Pro Recurring Buy Config
 
