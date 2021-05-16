@@ -16,6 +16,7 @@ To get started copy the `config.example.json` file to a folder that will be mapp
 [Creating a Coinbase Pro API Key](https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro)
 [Creating a Discord Webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
+The Coinbase Pro API Key will need a minimum of 'View' and 'Trade' permissions. If you want to enable Auto-Funding you will also need to grant it 'Transfer' permissions.
 
 ### Configuration File Options
 
