@@ -8,14 +8,11 @@ import alerts as send_alert
 
 if os.path.exists("/config/config.json"):
 
-    settings = settings.settings()
+    general_settings = settings.settings()
     send_alert = send_alert.alert_module()
 
-    api_settings = settings.api()
-    schedule_settings = settings.schedule()
-    funding_settings = settings.funding()
-    crypto_settings = settings.crypto()
-    alert_info = settings.alerts()
+    api_settings = general_settings.api()
+    schedule_settings = general_settings.schedule()
 
     for api in api_settings:
         key = api['Key']
@@ -29,26 +26,16 @@ if os.path.exists("/config/config.json"):
         repeat_time = the_schedule['Repeat-Time']
         run_every = the_schedule['Scheduled-Run']
 
-    for funding in funding_settings:
-        enable_funding = funding['Enable-Funding']
-        currency = funding['Currency']
-        max_fund = funding['Max-Fund']
-        fund_source = funding['Fund-Source']
-
-    for alerts in alert_info:
-        webhook_url = alerts['Discord-Webhook']
-        alerts_enabled = alerts['Alerts-Enabled']
-
     auth_client = coinbasepro.AuthenticatedClient(key, b64secret, passphrase, api_url=apiurl)
 
-    def check_funds():
+    def check_funds(currency):
         account_data = auth_client.get_accounts()
         for account in account_data:
             if account['currency'] == currency:
                 currency_balance = round(account['balance'])
                 return currency_balance
 
-    def get_funding_account(fund_amount, currency):
+    def get_funding_account(fund_amount, currency, fund_source):
         if fund_source == "default":
             payment_methods = auth_client.get_payment_methods()
             for payment in payment_methods:
@@ -66,7 +53,7 @@ if os.path.exists("/config/config.json"):
             payment_id = "Error"
         return payment_id
 
-    def add_funds(buy_total, current_funds):
+    def add_funds(buy_total, current_funds, max_fund, fund_source, currency):
         if buy_total > max_fund:
             error_msg = "Error: Total crypto cost is %s %s but max funding is set to %s %s. Unable to complete purchase.\nPlease check your config file." % (buy_total, currency, max_fund, currency)
             return ("Error", error_msg)
@@ -75,7 +62,7 @@ if os.path.exists("/config/config.json"):
             fund_msg = "Your balance is %s %s, a deposit of %s %s will be made using your selected payment account." % (current_funds, currency, fund_amount, currency)
             print(fund_msg)
             send_alert.discord(fund_msg)
-            payment_id = get_funding_account(fund_amount, currency)
+            payment_id = get_funding_account(fund_amount, currency, fund_source)
             if payment_id == "Error":
                 error_msg = "Unable to determine payment method."
                 return ("Error", error_msg)
@@ -94,7 +81,7 @@ if os.path.exists("/config/config.json"):
                     return ("Error", error_msg)
 
     # Function to perform the buy
-    def init_buy():
+    def init_buy(crypto_settings, currency):
         for crypto in crypto_settings:
             buy_pair = crypto['Buy-Pair']
             buy_amount = crypto['Buy-Amount']
@@ -104,28 +91,39 @@ if os.path.exists("/config/config.json"):
             order_id = buy['id']
             order_details = auth_client.get_order(order_id=order_id)
             crypto_bought = order_details['filled_size']
-            buy_completed = order_details['done_at']
+            # buy_completed = order_details['done_at']
             buy_message = "You bought %s of %s" % (crypto_bought, buy_pair)
             print(buy_message)
             send_alert.discord(buy_message)
 
     def recurring_buy():
+
+        recurring_buy_settings = settings.settings()
+        funding_settings = recurring_buy_settings.funding()
+        crypto_settings = recurring_buy_settings.crypto()
+
+        for funding in funding_settings:
+            enable_funding = funding['Enable-Funding']
+            currency = funding['Currency']
+            max_fund = funding['Max-Fund']
+            fund_source = funding['Fund-Source']
+
         buy_total = 0
         for crypto in crypto_settings:
             buy_total += crypto['Buy-Amount']
 
-        current_funds = check_funds()
+        current_funds = check_funds(currency)
 
         if current_funds >= buy_total:
-            init_buy()
+            init_buy(crypto_settings, currency)
         elif current_funds < buy_total:
             if enable_funding == True:
-                result = add_funds(buy_total, current_funds)
+                result = add_funds(buy_total, current_funds, max_fund, fund_source, currency)
                 if result[0] == "Error":
                     print(result[1])
                     send_alert.discord(result[1])
                 elif result[0] == "Success":
-                    init_buy()
+                    init_buy(crypto_settings, currency)
                 else:
                     fund_msg = "Something went wrong attempting to add funds to your account."
                     print(fund_msg)
@@ -140,16 +138,28 @@ Please deposit at least %s %s into your account" % (buy_total, currency)
     
     if run_every == "seconds":
         # Run every X seconds (mainly for testing purposes)
+        startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s seconds" % (repeat_time)
         schedule.every(repeat_time).seconds.do(recurring_buy)
+        print(startupMsg)
+        send_alert.discord(startupMsg)
     elif run_every == "days":
         # Run every X days at specified run time
+        startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s days at %s" % (repeat_time, run_time)
         schedule.every(repeat_time).days.at(run_time).do(recurring_buy)
+        print(startupMsg)
+        send_alert.discord(startupMsg)
     elif run_every == "weekday":
         # Run every specified weekday at run time
+        startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s at %s" % (run_day, run_time)
         getattr(schedule.every(), run_day).at(run_time).do(recurring_buy)
+        print(startupMsg)
+        send_alert.discord(startupMsg)
     else:
-        print("Unable to determine run type. Please check config...")
+        startupMsg = "Unable to determine run type. Please check config..."
+        print(startupMsg)
+        send_alert.discord(startupMsg)
     
+
     while True:
         schedule.run_pending()
         time.sleep(1)
