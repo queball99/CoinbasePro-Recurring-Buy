@@ -1,8 +1,8 @@
 # Coinbase Pro Recurring Buy Bot
 
-Have you ever wanted to automate recurring purchases via Coinbase Pro instead of Coinbase? I did too, so I built a bot to do it! The Bot can be setup to make recurring purchases weekly or every X number of days/seconds. Funds can be automatically added from your default funding account in Coinbase Pro or from Coinbase. Notifications about buys and funding can be sent to Discord.
+Have you ever wanted to automate recurring purchases via Coinbase Pro instead of Coinbase? I did too, so I built a Bot to do it! The Bot can be setup to make recurring purchases weekly or every X number of days/seconds. Funds can be automatically added from your default funding account in Coinbase Pro or from Coinbase. Notifications about buys and funding can be sent to a Discord channel via webhook.
 
-Build in Python and includes the following modules:<br />
+Built in Python and includes the following modules:<br />
 CoinbasePro by [Alex Contryman](https://github.com/acontry/coinbasepro)<br />
 Discord by [Rapptz](https://github.com/Rapptz/discord.py)<br />
 Schedule by [Dan Bader](https://github.com/dbader/schedule)<br />
@@ -27,16 +27,16 @@ The Coinbase Pro API Key will need a minimum of 'View' and 'Trade' permissions. 
 | Key | String | API Key from Coinbase Pro | Yes |
 | Secret | String | API Secret from Coinbase Pro | Yes |
 | Passphrase | String | API Passphrase from Coinbase Pro | Yes |
-| API-URL | String | Coinbase Pro API URL.<br />Available Options: `https://api.pro.coinbase.com` or `https://api-public.sandbox.pro.coinbase.com` | Yes |
+| API-URL | String | Coinbase Pro API URL You can use the production or sandbox URL.<br />Available Options: `https://api.pro.coinbase.com` or `https://api-public.sandbox.pro.coinbase.com` | Yes |
 | | | |
 | **Schedule** |  |  |  |
+| Scheduled-Run | String | How often should the recurring buy be run.<br />Available Options: `seconds`, `days`, `weekday` | Yes |
 | Day | String | Day of the week to make the recurring buy.<br />Available Options: `sunday`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday` | If Scheduled-Run is set to `weekday` |
 | Time | String | The time to make the recurring buy. Specified in 24hr time as `HH:MM`. | If Scheduled-Run is set to `weekday` or `days`. |
 | Repeat-Time | Integer | Delay between runs. Will be X days or X seconds depending on if Scheduled-Run is set to `days` or `seconds`. | If Scheduled-Run is set to `days` or `seconds` |
-| Scheduled-Run | String | How often should the recurring buy be run.<br />Available Options: `seconds`, `days`, `weekday` | Yes |
 | | | |
 | **Funding** |  |  |  |
-| Enable-Funding | Boolean | Enable automatic funding. | Yes |
+| Enable-Funding | Boolean | Enable automatic funding.<br />Available Options: `true` or `false` | Yes |
 | Currency | String | The currency to fund your account with.<br />Examples: `USD`, `GBP`, `EUR` | If Enable-Funding is set to `true` |
 | Max-Fund | Integer | The maximum amount of currency you want to allow the bot to fund at one time. | If Enable-Funding is set to `true` |
 | Fund-Source | String | The source to fund your Coinbase Pro account from to make the purchase.<br />Available Options:<br />`default` will fund from your primary Banking account in Coinbase Pro.<br />`coinbase` will transfer currency from your Coinbase portfolio. | If Enable-Funding is set to `true` |
@@ -64,7 +64,7 @@ You can have alerts about funding and buys sent to Discord via a Webhook. See th
 ### Version Tags
 
 | Tag | Description |
-| :----: | --- |
+| :---- | --- |
 | latest | Latest stable release |
 | development | New features will be added and tested here |
 
