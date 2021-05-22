@@ -9,10 +9,10 @@
     ],
     "Schedule" : [
         {
+            "Scheduled-Run" : "weekday",
             "Day" : "thursday",
             "Time" : "23:13",
-            "Repeat-Time" : 10,
-            "Scheduled-Run" : "weekday"
+            "Repeat-Time" : 10
         }
     ],
     "Funding" : [
