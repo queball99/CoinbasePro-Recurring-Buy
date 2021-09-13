@@ -2,6 +2,7 @@
 
 import os, sys
 import json
+import math
 import coinbasepro, schedule, time
 import settings
 import alerts as send_alert
@@ -32,7 +33,7 @@ if os.path.exists("/config/config.json"):
         account_data = auth_client.get_accounts()
         for account in account_data:
             if account['currency'] == currency:
-                currency_balance = round(account['balance'], 2)
+                currency_balance = math.ceil(account['balance'])
                 return currency_balance
 
     def get_funding_account(fund_amount, currency, fund_source):
@@ -44,7 +45,7 @@ if os.path.exists("/config/config.json"):
         elif fund_source == "coinbase":
             payment_methods = auth_client.get_coinbase_accounts()
             for payment in payment_methods:
-                if ((payment['currency'] == currency) and (round(payment['balance'], 2) >= fund_amount)):
+                if ((payment['currency'] == currency) and (math.ceil(payment['balance']) >= fund_amount)):
                     payment_id = payment['id']
                     break
                 else:
