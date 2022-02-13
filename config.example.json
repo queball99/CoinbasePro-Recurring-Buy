@@ -35,8 +35,10 @@
     ],
     "Alerts" : [
         {
-            "Alerts-Enabled" : true,
-            "Discord-Webhook" : "DISCORD_WEBHOOK_URL"
+            "Alerts-Channel" : "discord",
+            "Discord-Webhook" : "DISCORD_WEBHOOK_URL",
+            "Pushover-API-Token": "PUSHOVER_API_TOKEN",
+            "Pushover-User-Key": "PUSHOVER_USER_KEY"
         }
     ]
 }
