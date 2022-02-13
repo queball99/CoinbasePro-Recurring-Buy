@@ -10,7 +10,7 @@ import alerts
 if os.path.exists("/config/config.json"):
 
     general_settings = settings.settings()
-    alerts = alerts.alert_module()
+    alert = alerts.alert_module()
 
     api_settings = general_settings.api()
     schedule_settings = general_settings.schedule()
@@ -62,7 +62,7 @@ if os.path.exists("/config/config.json"):
             fund_amount = buy_total - current_funds
             fund_msg = "Your balance is %s %s, a deposit of %s %s will be made using your selected payment account." % (current_funds, currency, fund_amount, currency)
             print(fund_msg)
-            alerts.send(fund_msg)
+            alert.send(fund_msg)
             payment_id = get_funding_account(fund_amount, currency, fund_source)
             if payment_id == "Error":
                 error_msg = "Unable to determine payment method."
@@ -92,10 +92,9 @@ if os.path.exists("/config/config.json"):
             order_id = buy['id']
             order_details = auth_client.get_order(order_id=order_id)
             crypto_bought = order_details['filled_size']
-            # buy_completed = order_details['done_at']
             buy_message = "You bought %s of %s" % (crypto_bought, buy_pair)
             print(buy_message)
-            alerts.send(buy_message)
+            alert.send(buy_message)
 
     def recurring_buy():
 
@@ -122,43 +121,42 @@ if os.path.exists("/config/config.json"):
                 result = add_funds(buy_total, current_funds, max_fund, fund_source, currency)
                 if result[0] == "Error":
                     print(result[1])
-                    alerts.send(result[1])
+                    alert.send(result[1])
                 elif result[0] == "Success":
                     init_buy(crypto_settings, currency)
                 else:
                     fund_msg = "Something went wrong attempting to add funds to your account."
                     print(fund_msg)
-                    alerts.send(fund_msg)
+                    alert.send(fund_msg)
             elif enable_funding != True:
                 funding_msg = "Unable to complete your Coinbase Pro purchase.\n\
 Insufficient funds to make purchase and Auto-Funding is not enabled.\n\
 Please deposit at least %s %s into your account" % (buy_total, currency)
                 print(funding_msg)
-                alerts.send(funding_msg)
-                # print("Please deposit at least %s %s into your account" % (buy_total, currency))       
+                alert.send(funding_msg)
     
     if run_every == "seconds":
         # Run every X seconds (mainly for testing purposes)
         startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s seconds" % (repeat_time)
         schedule.every(repeat_time).seconds.do(recurring_buy)
         print(startupMsg)
-        alerts.send(startupMsg)
+        alert.send(startupMsg)
     elif run_every == "days":
         # Run every X days at specified run time
         startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s days at %s" % (repeat_time, run_time)
         schedule.every(repeat_time).days.at(run_time).do(recurring_buy)
         print(startupMsg)
-        alerts.send(startupMsg)
+        alert.send(startupMsg)
     elif run_every == "weekday":
         # Run every specified weekday at run time
         startupMsg = "Recurring Buy Bot Started!\nSchedule set for every %s at %s" % (run_day, run_time)
         getattr(schedule.every(), run_day).at(run_time).do(recurring_buy)
         print(startupMsg)
-        alerts.send(startupMsg)
+        alert.send(startupMsg)
     else:
         startupMsg = "Unable to determine run type. Please check config..."
         print(startupMsg)
-        alerts.send(startupMsg)
+        alert.send(startupMsg)
     
 
     while True:
