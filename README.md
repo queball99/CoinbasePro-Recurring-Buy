@@ -48,12 +48,19 @@ The Coinbase Pro API Key will need a minimum of 'View' and 'Trade' permissions. 
 | Buy-Amount | Integer | The amount of crypto to buy, specified in your currency.<br />Example: Specifying `20` and `BTC-USD` will buy 20 USD worth of BTC. | Yes |
 | | | | |
 | **Alerts** |  |  |  |
-| Alerts-Enabled | Boolean | Enables sending buy and funding alerts to Discord. | Yes |
-| Discord-Webhook | String | The webhook URL you create in your Discord server. | If Alerts-Enabled is set to `true` |
+| Alert-Channel | String | Enables sending alert messages to Discord or Pushover.<br />Available Options: `discord`, `pushover` or leave empty for no notifications. | Yes |
+| Discord-Webhook | String | The webhook URL you create in your Discord server. | If Alert-Channel is set to `discord` |
+| Pushover-API-Token | String | Pushover API Token. | If Alert-Channel is set to `pushover` |
+| Pushover-User-Key | String | Pushover user key. | If Alert-Channel is set to `pushover` |
 
-## Discord Alerts
+## Alerts
+### Discord
 
 You can have alerts about funding and buys sent to Discord via a Webhook. See this [Discord support article](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for how to setup a Webhook.
+
+### Pushover
+You can have alerts about funding and buys sent via the Pushover push notification service.<br />
+[What is Pushover and how do I use it?](https://support.pushover.net/i7-what-is-pushover-and-how-do-i-use-it)
 
 ## Docker Container
 
