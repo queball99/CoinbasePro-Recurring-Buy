@@ -38,7 +38,9 @@
             "Alert-Channel" : "discord",
             "Discord-Webhook" : "DISCORD_WEBHOOK_URL",
             "Pushover-API-Token": "PUSHOVER_API_TOKEN",
-            "Pushover-User-Key": "PUSHOVER_USER_KEY"
+            "Pushover-User-Key": "PUSHOVER_USER_KEY",
+            "Pushcut-API-Key": "PUSHCUT_API_KEY",
+            "Pushcut-Notification-Name": "PUSHCUT_NOTIFICATION_NAME"
         }
     ]
 }
