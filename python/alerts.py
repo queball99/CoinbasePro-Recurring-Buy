@@ -29,6 +29,13 @@ class alert_module:
                     urllib.parse.urlencode({
                         "token": alert_data['Pushover-API-Token'],
                         "user": alert_data['Pushover-User-Key'],
-                        "message": alert_msg,
+                        "message": alert_msg
                     }), { "Content-type": "application/x-www-form-urlencoded" })
+                webhook.getresponse()
+            elif alert_data['Alert-Channel'] == 'pushcut':
+                webhook = http.client.HTTPSConnection("api.pushcut.io:443")
+                webhook.request("POST", "/v1/notifications/" + alert_data['Pushcut-Notification-Name'],
+                    urllib.parse.urlencode({
+                        "text": alert_msg
+                    }), { "Content-type": "application/x-www-form-urlencoded", "API-Key": alert_data['Pushcut-API-Key'] })
                 webhook.getresponse()
