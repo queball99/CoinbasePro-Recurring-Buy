@@ -90,7 +90,7 @@ if os.path.exists("/config/config.json"):
             buy = auth_client.place_market_order(product_id=buy_pair, side="buy", funds=buy_amount)
 
             # Wait 3 seconds for the order to be matched and get order details.
-            sleep(3)
+            time.sleep(3)
             order_id = buy['id']
             order_details = auth_client.get_order(order_id=order_id)
             crypto_bought = order_details['filled_size']
