@@ -88,9 +88,8 @@ if os.path.exists("/config/config.json"):
             buy_amount = crypto['Buy-Amount']
             print("Initiating buy of %s %s of %s..." % (buy_amount, currency, buy_pair))
             buy = auth_client.place_market_order(product_id=buy_pair, side="buy", funds=buy_amount)
-
-            # Wait 3 seconds for the order to be matched and get order details.
-            time.sleep(3)
+            # Wait 5 seconds for the order to be matched and get order details.
+            time.sleep(5)
             order_id = buy['id']
             order_details = auth_client.get_order(order_id=order_id)
             crypto_bought = order_details['filled_size']
